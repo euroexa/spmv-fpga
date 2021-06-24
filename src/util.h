@@ -10,6 +10,9 @@ typedef ap_uint<32> IndexType;
 #define INDEX_FMT  "u"
 #define INDEX_TYPE_BIT_WIDTH 32
 
+typedef ap_uint<16> CompressedIndexType;
+#define COMPRESSED_INDEX_TYPE_BIT_WIDTH 16
+
 typedef ap_uint<1> BoolType;
 
 #if DOUBLE == 0
@@ -37,22 +40,31 @@ typedef ap_uint<1> BoolType;
 
 #if CU == 1
 	#define ComputeUnits 1
-	#define COLS_DIV_BLOCKS (1024*480)
+	#define COLS_DIV_BLOCKS (32768)
 #elif CU == 2
 	#define ComputeUnits 2
-	#define COLS_DIV_BLOCKS (1024*220)
+	#define COLS_DIV_BLOCKS (32768)
 #elif CU == 4
 	#define ComputeUnits 4
-	#define COLS_DIV_BLOCKS (1024*110)
+	#define COLS_DIV_BLOCKS (32768)
 #elif CU == 8
 	#define ComputeUnits 8
-	#define COLS_DIV_BLOCKS (1024*50)
+	#define COLS_DIV_BLOCKS (32768)
+#elif CU == 10
+	#define ComputeUnits 10
+	#define COLS_DIV_BLOCKS (16384)
+#elif CU == 12
+	#define ComputeUnits 12
+	#define COLS_DIV_BLOCKS (16384)
 #endif
 
 #define BUS_BIT_WIDTH 128
 
 #define RATIO_i (BUS_BIT_WIDTH/INDEX_TYPE_BIT_WIDTH)
 #define RATIO_v (BUS_BIT_WIDTH/VALUE_TYPE_BIT_WIDTH)
+#define RATIO_ci (BUS_BIT_WIDTH/COMPRESSED_INDEX_TYPE_BIT_WIDTH)
+
+#define RATIO_col_val (RATIO_ci/RATIO_v+1)
 
 typedef ap_uint<BUS_BIT_WIDTH> BusDataType;
 

@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 	csr_matrix *matrix;
 	csr_vector *x, *y;
 	
+	bool **empty_rows_bitmap;
 	csr_hw_matrix **hw_matrix;
 	csr_hw_vector *hw_x;
 	csr_vector *y_fpga;
@@ -56,7 +57,7 @@ int main(int argc, char** argv)
 	init_vector_rand(x, 1);
 
 	y = create_csr_vector(hdr.nr_rows);
-	    
+
 	sw_s = getTimestamp();
 	spmv_gold(matrix, x->values, y->values);
 	sw_f = getTimestamp();
@@ -64,14 +65,14 @@ int main(int argc, char** argv)
 	printf("Software execution time : %.6f ms elapsed\n", sw_exec);
 
 	mr_s = getTimestamp();
-	create_csr_hw_matrix(matrix, &hw_matrix);
+	create_csr_hw_matrix(matrix, &hw_matrix, &empty_rows_bitmap);
 	create_csr_hw_x_vector(&hw_x, x, hw_matrix[0]->blocks, hw_matrix[0]->nr_cols);
 	mr_f = getTimestamp();
 	mr_exec = (mr_f - mr_s)/(1000);
 	printf("Matrix read time        : %.6f ms elapsed\n", mr_exec);
 
 	y_fpga = create_csr_vector(hdr.nr_rows);
-	spmv_hw(hw_matrix, hw_x, y_fpga);
+	spmv_hw(hw_matrix, hw_x, y_fpga, empty_rows_bitmap);
 
 	int status = verification(y->nr_values, y->values, y_fpga->values, 0);
 
@@ -91,7 +92,9 @@ int main(int argc, char** argv)
 	delete_csr_vector(y);
 
 	delete_csr_hw_matrix(hw_matrix);
+	free(empty_rows_bitmap);
 	delete_csr_hw_x_vector(hw_x);
 	delete_csr_vector(y_fpga);
+
 	return 0;
 }

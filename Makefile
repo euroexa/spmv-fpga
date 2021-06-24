@@ -10,7 +10,7 @@ PLATFORM := zcu102
 #   emu - Compile for emulation (Default)
 TARGET := emu
 
-# Number of Compute Units      : 1, 2, 4, 8
+# Number of Compute Units      : 1, 2, 4, 8, 10, 12
 CU := 1
 # Vectorization Factor applied : 1, 2, 4, 8
 VF := 1
@@ -122,6 +122,6 @@ ECHO:= @echo
 .PHONY: help
 help::
 	$(ECHO) "Makefile Usage:"
-	$(ECHO) "	make all TARGET=<emu/hw> TARGET_OS=<linux/standalone> CU=<1/2/4/8> VF=<1/2/4/8> DOUBLE=<0/1>" 
+	$(ECHO) "	make all TARGET=<emu/hw> TARGET_OS=<linux/standalone> CU=<1/2/4/8/10/12> VF=<1/2/4/8> DOUBLE=<0/1>" 
 	$(ECHO) "		Command to generate the design for specified Target and OS."
 	$(ECHO) ""
