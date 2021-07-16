@@ -56,7 +56,7 @@ CSR Representation format :
 <p align="center"><img src="./images/2_csr.svg" width="350"/></p>
 
 HW Representation format :
-<p align="center"><img src="./images/4_hw_representation_updated.svg" width="350"/></p>
+<p align="center"><img src="./images/3_hw_representation_v3.svg" width="350"/></p>
 
 For each Compute Unit, one struct is used for representation of the sparse matrix; **submatrix**. This struct is 128-bits wide, in order to fully utilize the available memory bandwidth of HP ports of Xilinx ZCU102.
 
